@@ -6,9 +6,6 @@ name: Backend.js CI
 on:
   push:
     branches: [ "08-jo-mvp" ]
-  pull_request:
-    branches: [ "08-jo-mvp" ]
-
 jobs:
   Build-Backend:
     runs-on: self-hosted
