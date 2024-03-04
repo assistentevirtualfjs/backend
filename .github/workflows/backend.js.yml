@@ -6,11 +6,21 @@ name: Backend.js CI
 on:
   push:
     branches: [ "08-jo-mvp" ]
+
 jobs:
   Build-Backend:
     runs-on: self-hosted
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+
       - name: Install Dependencies BACKEND
+        run: npm install
+
+      - name: Build
         run: npm run build
+
