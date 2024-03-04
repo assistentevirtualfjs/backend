@@ -7,7 +7,7 @@
   "scripts": {
     "test": "jest",
     "coverage": "jest --coverage",
-    "build": "powershell -Command \"Remove-Item dist -Recurse -Force -ErrorAction SilentlyContinue\" && tsc"
+    "build": "powershell -Command \"Remove-Item dist -Recurse -Force -ErrorAction SilentlyContinue\" && tsc",
     "dev": "npx tsx ./src/services/processors/server.ts",
     "start": "npx tsx ./src/services/controller/server.ts",
     "lint": "prettier --write \"{src,test}/**/*.ts\""
