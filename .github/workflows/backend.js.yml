@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-node@v3
 
       - name: Install Dependencies BACKEND
-        run: pm2 install
+        run: npm install
 
       - name: Build
         run: npm run build
