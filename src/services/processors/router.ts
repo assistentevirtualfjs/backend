@@ -52,6 +52,7 @@ router.post("/", async (request: Request, response: Response) => {
     const vectorStore = await setupVectorStore(normalizedDocs);
 
     const openai = new OpenAI({
+      openAIApiKey: process.env.OPENAI_API_KEY!,
       modelName: "gpt-4",
       temperature: 0.7,
     });

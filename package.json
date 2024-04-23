@@ -2,8 +2,6 @@
   "name": "assistente-virtual-fjs",
   "version": "1.0.0",
   "main": "dist/index.js",
-
-  
   "scripts": {
     "test": "jest",
     "coverage": "jest --coverage",
