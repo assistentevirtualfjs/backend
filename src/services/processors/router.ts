@@ -20,12 +20,13 @@ router.post("/", async (request: Request, response: Response) => {
     const normalizedDocs = await loadAndNormalizeDocuments();
     const vectorStore = await setupVectorStore(normalizedDocs);
 
-    const openai = new OpenAI({
+     const openai = new OpenAI({
+      modelName: "gpt-4",
+      temperature: 0.7,
       configuration: {
-        apiKey: process.env.OPENAI_API_KEY || "",
-      },
+        apiKey: "sk-proj-TkJu84D9WMqBvtv0eRINT3BlbkFJzLaclqbOK6og44eyoTJz"
+      }
     });
-
     const chain = RetrievalQAChain.fromLLM(openai, vectorStore.asRetriever());
 
     console.log("Querying chain...");
