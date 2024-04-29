@@ -47,4 +47,4 @@ jobs:
         run: docker rm nodejsContainer || true
 
       - name: Run the new container
-        run: docker run -d --restart=always --name nodejsContainer -p 5000:5000 acelerafjsprojetos/backendassistente:${{ github.sha }}
+        run: docker run -d --restart=always --name nodejsContainer -p 8000:8000 acelerafjsprojetos/backendassistente:${{ github.sha }}
