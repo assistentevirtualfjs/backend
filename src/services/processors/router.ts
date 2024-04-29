@@ -24,7 +24,7 @@ router.post("/", async (request: Request, response: Response) => {
       modelName: "gpt-4",
       temperature: 0.7,
       configuration: {
-        apiKey: "''"
+        apiKey: "YOURAPIKEY"
       }
     });
     const chain = RetrievalQAChain.fromLLM(openai, vectorStore.asRetriever());
