@@ -30,15 +30,15 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t acelerafjsprojetos/backendassistente:${{ github.sha }} .
-          docker push acelerafjsprojetos/backendassistente:${{ github.sha }}
+          docker build -t acelerafjsprojetos/backendassistente .
+          docker push acelerafjsprojetos/backendassistente
 
   deploy:
     needs: build
     runs-on: self-hosted
     steps:
       - name: Pull the latest Docker image
-        run: docker pull acelerafjsprojetos/backendassistente:${{ github.sha }}
+        run: docker pull acelerafjsprojetos/backendassistente
 
       - name: Stop the current container
         run: docker stop nodejsContainer || true
@@ -47,4 +47,4 @@ jobs:
         run: docker rm nodejsContainer || true
 
       - name: Run the new container
-        run: docker run -d --restart=always --name nodejsContainer -p 8000:8000 acelerafjsprojetos/backendassistente:${{ github.sha }}
+        run: docker run -d --restart=always --name nodejsContainer -p 8000:8000 acelerafjsprojetos/backendassistente:latest
