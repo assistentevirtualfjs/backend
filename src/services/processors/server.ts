@@ -1,7 +1,7 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
-import { setupExpress } from "./expressConfig";
-import { router } from "./router";
+import { setupExpress } from "./expressConfig.js";
+import { router } from "./router.js";
 import cookieParser from "cookie-parser";
 
 dotenv.config();

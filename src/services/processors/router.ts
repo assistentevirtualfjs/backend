@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
-import { setupVectorStore } from "./vectorStore";
-import { loadAndNormalizeDocuments } from "./documentLoader";
+import { setupVectorStore } from "./vectorStore.js";
+import { loadAndNormalizeDocuments } from "./documentLoader.js";
 import { OpenAI } from "langchain/llms/openai";
 import { RetrievalQAChain } from "langchain/chains";
 
