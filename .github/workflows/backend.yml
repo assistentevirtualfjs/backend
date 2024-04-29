@@ -1,4 +1,4 @@
-name: Node-Backend-CI-CD
+name: Node-Backend CI-CD
 on:
   push:
     branches:
