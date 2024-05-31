@@ -2,8 +2,6 @@ name: Backend-Jo-AWS Workflow
 
 on:
   push:
-    paths:
-      - backend/**
     branches:
       - backend-mvp
   pull_request:
