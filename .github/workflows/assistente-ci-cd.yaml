@@ -1,4 +1,4 @@
-name: Backend-Jo AWS Workflow
+name: Backend-Jo AWS Workflow.
 
 on:
   push:
