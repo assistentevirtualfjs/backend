@@ -34,15 +34,13 @@ export const loadAndNormalizeDocuments = async (): Promise<string[]> => {
 };
 
 export const setupVectorStore = async (docs: string[]): Promise<Chroma> => {
-  /*   let vectorStore: HNSWLib; */
-
   const joinedText = docs.join("\n\n");
 
   console.log("Checking for existing vector store...");
 
   const textSplitter = new RecursiveCharacterTextSplitter({
     separators: ["\n\n", "\n", ".", "!", "?", ";", " ", ""],
-    chunkSize: 1000,
+    chunkSize: 10000,
     chunkOverlap: 200,
   });
 
@@ -55,14 +53,10 @@ export const setupVectorStore = async (docs: string[]): Promise<Chroma> => {
     splitDocs,
     new OpenAIEmbeddings(),
     {
-      url: "http://localhost:9000",
+      url: "http://localhost:8000",
     }
   );
   console.log("Vectorized and stored documents:", ChromaVectorStore);
 
   return ChromaVectorStore;
 };
-
-
-  
-

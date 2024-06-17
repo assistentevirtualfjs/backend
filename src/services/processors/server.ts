@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 
 const app: Express = express();
-const port: number = 8000;
+const port: number = 9000;
 app.use(cookieParser());
 
 setupExpress(app);

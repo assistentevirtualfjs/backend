@@ -1,11 +1,11 @@
 import { Request, Response, Router } from "express";
 import { loadAndNormalizeDocuments, setupVectorStore } from "./vectorStore.js";
-
+import { similarVectorStore } from "./documentLoader.js";
 import now from "performance-now";
-import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { Chat } from "openai/resources/index.mjs";
 import { ChatOpenAI } from "@langchain/openai";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 let totalInteractions = 0;
 let resolvedInteractions = 0;
@@ -13,53 +13,62 @@ let totalTimeSpent = 0;
 
 export const router = Router();
 
-
-
 router.post("/", async (request: Request, response: Response) => {
-    const { chats } = request.body;
+  const { chats } = request.body;
+  const startTime = now();
 
-    const startTime = now();
+  // Load and normalize documents
+  const normalizedDocs = await loadAndNormalizeDocuments();
 
+  // Set up vector store with embeddings
+  await setupVectorStore(normalizedDocs);
 
+  // Find similar chunks for the query
+  const similarChunks = await similarVectorStore(normalizedDocs, chats);
 
-    // Load and normalize documents
-    const normalizedDocs = await loadAndNormalizeDocuments();
-  
-    // Set up vector store with embeddings
-    const embeddingsVector = await setupVectorStore(normalizedDocs);
-  
-   
-    // Initialize ChatOpenAI model
-    const model = new ChatOpenAI({ openAIApiKey: process.env.OPENAI_API_KEY as string, model: "gpt-3.5-turbo" });
-  
-    // Create a prompt template
-    const prompt = ChatPromptTemplate.fromTemplate(`Answer the user's question: {chats}`);
-  
-    // Combine the prompt and model into a chain
-    const chain = prompt.chain(model);
+  // Initialize ChatOpenAI model
+  const model = new ChatOpenAI({
+    openAIApiKey: process.env.OPENAI_API_KEY as string,
+    modelName: "gpt-4-turbo",
+  });
 
-  
-  
-    console.log("Querying chain...");
-    const result = await chain.call({ query: chats });
+  // Create a prompt template
+  const promptTemplate = ChatPromptTemplate.fromTemplate(`
+    Quero que você atue como uma assistente da empresa Fundação José Silveira, ou FJS.
+    Você é a Jô, a assistente virtual que veio para facilitar informações para os colaboradores.
+    Um exemplo de informação que você pode dar é acerca dos ramais da Fundação, sobre a história ou
+    sobre as principais sedes da empresa.
 
-    // metricas
-    const endTime = now();
-    const elapsedTime = Number(endTime) - Number(startTime);
+    Pergunta do Usuário: {query}
 
-    totalInteractions++;
-    totalTimeSpent += elapsedTime;
+    As descrições sobre alguns setores da FJS: {chunks}
+    Se limite a responder com base nessas informações fornecidas. Tente não trazer outras informações na sua resposta.
+    Não responda em mais do que 300 palavras.
+  `);
 
-    if (result) {
-      resolvedInteractions++;
-    }
+  // Generate the prompt with the chunks and user query
+  const formattedPrompt = await promptTemplate.format({
+    query: chats,
+    chunks: similarChunks.join("\n")
+  });
 
-    logMetrics();
+  // Generate response using the formatted prompt
+  const result = await model.invoke(formattedPrompt);
+  // Record metrics
+  const endTime = now();
+  const elapsedTime = Number(endTime) - Number(startTime);
 
-    response.json({ output: result });
+  totalInteractions++;
+  totalTimeSpent += elapsedTime;
+
+  if (result) {
+    resolvedInteractions++;
   }
-);
 
+  logMetrics();
+
+  response.json({ output: result });
+});
 
 // Função para registrar métricas
 function logMetrics() {
