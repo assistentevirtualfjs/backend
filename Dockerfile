@@ -21,7 +21,7 @@ RUN npm install --force
 
 COPY . .
 
-ENV OPENAI_API_KEY="sk-proj-9aJIQTZJDgt7wfqc7uLxT3BlbkFJ7PdiRgROjrOlrtrsqR7B"
+ENV OPENAI_API_KEY=""
 
 EXPOSE 9000
 
