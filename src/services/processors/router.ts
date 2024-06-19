@@ -29,7 +29,7 @@ router.post("/", async (request: Request, response: Response) => {
   // Initialize ChatOpenAI model
   const model = new ChatOpenAI({
     openAIApiKey: process.env.OPENAI_API_KEY as string,
-    modelName: "gpt-4-turbo",
+    modelName: "gpt-4o-2024-05-13",
   });
 
   // Create a prompt template
